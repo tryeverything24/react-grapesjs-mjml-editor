@@ -476,100 +476,100 @@ const initialTemplate = [
     applyStarterTemplateIfEmpty();
 
     // Add custom visual styling for native mj-group components
-    editor.on('load', () => {
-      registerPrebuiltBlocks(editor);
+    // editor.on('load', () => {
+    //   registerPrebuiltBlocks(editor);
 
-      const desiredCategories = ['MEM', 'ERDC'];
-      const categoriesCollection = editor.BlockManager.getCategories();
-      const categoriesArray = Array.isArray(categoriesCollection)
-        ? categoriesCollection
-        : Array.isArray((categoriesCollection as { models?: unknown[] } | undefined)?.models)
-          ? ((categoriesCollection as { models: unknown[] }).models as unknown[])
-          : [];
+    //   const desiredCategories = ['MEM', 'ERDC'];
+    //   const categoriesCollection = editor.BlockManager.getCategories();
+    //   const categoriesArray = Array.isArray(categoriesCollection)
+    //     ? categoriesCollection
+    //     : Array.isArray((categoriesCollection as { models?: unknown[] } | undefined)?.models)
+    //       ? ((categoriesCollection as { models: unknown[] }).models as unknown[])
+    //       : [];
 
-      desiredCategories.forEach((label) => {
-        const category = categoriesArray.find(
-          (candidate) =>
-            (candidate as { get?: (key: string) => unknown })?.get?.('label') === label,
-        ) as { set?: (key: string, value: unknown) => void } | undefined;
+    //   desiredCategories.forEach((label) => {
+    //     const category = categoriesArray.find(
+    //       (candidate) =>
+    //         (candidate as { get?: (key: string) => unknown })?.get?.('label') === label,
+    //     ) as { set?: (key: string, value: unknown) => void } | undefined;
 
-        category?.set?.('open', true);
-      });
+    //     category?.set?.('open', true);
+    //   });
 
-      const rootComponent = editor.DomComponents.getWrapper();
-      if (rootComponent) {
-        deepSanitize(rootComponent);
-      }
+    //   const rootComponent = editor.DomComponents.getWrapper();
+    //   if (rootComponent) {
+    //     deepSanitize(rootComponent);
+    //   }
 
-      applyStarterTemplateIfEmpty();
-      const style = document.createElement('style');
-      style.textContent = `
-        .gjs-selected [data-gjs-type="mj-group"] {
-          outline: 2px dashed #4CAF50 !important;
-          outline-offset: 2px;
-        }
+    //   applyStarterTemplateIfEmpty();
+    //   const style = document.createElement('style');
+    //   style.textContent = `
+    //     .gjs-selected [data-gjs-type="mj-group"] {
+    //       outline: 2px dashed #4CAF50 !important;
+    //       outline-offset: 2px;
+    //     }
 
-        [data-gjs-type="mj-group"]::before {
-          content: "GROUP";
-          display: inline-block;
-          background: #4CAF50;
-          color: white;
-          font-size: 10px;
-          padding: 2px 6px;
-          border-radius: 3px;
-          margin-right: 8px;
-        }
-      `;
-      document.head.appendChild(style);
+    //     [data-gjs-type="mj-group"]::before {
+    //       content: "GROUP";
+    //       display: inline-block;
+    //       background: #4CAF50;
+    //       color: white;
+    //       font-size: 10px;
+    //       padding: 2px 6px;
+    //       border-radius: 3px;
+    //       margin-right: 8px;
+    //     }
+    //   `;
+    //   document.head.appendChild(style);
 
-      // Fix for MJML components with zero padding disappearing from canvas
-      // Inject CSS into the canvas iframe after a delay to ensure it's ready
-      setTimeout(() => {
-        const injectCanvasStyles = () => {
-          const canvasFrames = editor.Canvas.getFrames();
-          canvasFrames.forEach((frame: { view?: { el?: HTMLIFrameElement } }) => {
-            const iframe = frame.view?.el;
-            if (iframe?.contentDocument?.head) {
-              // Check if styles already injected
-              if (iframe.contentDocument.getElementById('mjml-padding-fix')) {
-                return;
-              }
+    //   // Fix for MJML components with zero padding disappearing from canvas
+    //   // Inject CSS into the canvas iframe after a delay to ensure it's ready
+    //   setTimeout(() => {
+    //     const injectCanvasStyles = () => {
+    //       const canvasFrames = editor.Canvas.getFrames();
+    //       canvasFrames.forEach((frame: { view?: { el?: HTMLIFrameElement } }) => {
+    //         const iframe = frame.view?.el;
+    //         if (iframe?.contentDocument?.head) {
+    //           // Check if styles already injected
+    //           if (iframe.contentDocument.getElementById('mjml-padding-fix')) {
+    //             return;
+    //           }
 
-              const canvasStyle = iframe.contentDocument.createElement('style');
-              canvasStyle.id = 'mjml-padding-fix';
-              canvasStyle.textContent = `
-                /* Ensure MJML wrapper components have minimum height */
-                [data-gjs-type="mj-body"],
-                [data-gjs-type="mj-wrapper"],
-                [data-gjs-type="mj-section"],
-                [data-gjs-type="mj-group"],
-                [data-gjs-type="mj-column"] {
-                  min-height: 20px !important;
-                }
+    //           const canvasStyle = iframe.contentDocument.createElement('style');
+    //           canvasStyle.id = 'mjml-padding-fix';
+    //           canvasStyle.textContent = `
+    //             /* Ensure MJML wrapper components have minimum height */
+    //             [data-gjs-type="mj-body"],
+    //             [data-gjs-type="mj-wrapper"],
+    //             [data-gjs-type="mj-section"],
+    //             [data-gjs-type="mj-group"],
+    //             [data-gjs-type="mj-column"] {
+    //               min-height: 20px !important;
+    //             }
 
-                /* Make components with zero padding visible with subtle outline */
-                [data-gjs-type="mj-section"][style*="padding: 0"],
-                [data-gjs-type="mj-section"][style*="padding:0"],
-                [data-gjs-type="mj-group"][style*="padding: 0"],
-                [data-gjs-type="mj-group"][style*="padding:0"] {
-                  min-height: 50px !important;
-                  box-shadow: inset 0 0 0 1px rgba(150, 150, 150, 0.3) !important;
-                }
-              `;
-              iframe.contentDocument.head.appendChild(canvasStyle);
-            }
-          });
-        };
+    //             /* Make components with zero padding visible with subtle outline */
+    //             [data-gjs-type="mj-section"][style*="padding: 0"],
+    //             [data-gjs-type="mj-section"][style*="padding:0"],
+    //             [data-gjs-type="mj-group"][style*="padding: 0"],
+    //             [data-gjs-type="mj-group"][style*="padding:0"] {
+    //               min-height: 50px !important;
+    //               box-shadow: inset 0 0 0 1px rgba(150, 150, 150, 0.3) !important;
+    //             }
+    //           `;
+    //           iframe.contentDocument.head.appendChild(canvasStyle);
+    //         }
+    //       });
+    //     };
 
-        // Inject styles initially
-        injectCanvasStyles();
+    //     // Inject styles initially
+    //     injectCanvasStyles();
 
-        // Re-inject on frame updates (when canvas reloads)
-        editor.on('frame:load', injectCanvasStyles);
-      }, 100);
+    //     // Re-inject on frame updates (when canvas reloads)
+    //     editor.on('frame:load', injectCanvasStyles);
+    //   }, 100);
 
-      allowStarterTemplateInjection = false;
-    });
+    //   allowStarterTemplateInjection = false;
+    // });
 
     editor.on('component:remove', ensureMjBodyPresence);
     editor.on('run:core:canvas-clear', () => {
@@ -667,15 +667,15 @@ const initialTemplate = [
       '</mj-section>',
     ].join('\n');
 
-    editor.BlockManager.add('mj-group', {
-      label: 'Group',
-      category: 'Basic',
-      content: sanitizeMjmlMarkup(mjGroupBlockMarkup),
-      media: `<svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3,3H21V7H3V3M3,9H21V11H3V9M3,13H21V21H3V13M5,15V19H19V15H5Z" />
-      </svg>`,
-      attributes: { class: 'fa fa-object-group' },
-    });
+    // editor.BlockManager.add('mj-group', {
+    //   label: 'Group',
+    //   category: 'Basic',
+    //   content: sanitizeMjmlMarkup(mjGroupBlockMarkup),
+    //   media: `<svg viewBox="0 0 24 24" fill="currentColor">
+    //     <path d="M3,3H21V7H3V3M3,9H21V11H3V9M3,13H21V21H3V13M5,15V19H19V15H5Z" />
+    //   </svg>`,
+    //   attributes: { class: 'fa fa-object-group' },
+    // });
 
     console.log('Available blocks after adding mj-group:', editor.BlockManager.getAll().length);
   }, []);
