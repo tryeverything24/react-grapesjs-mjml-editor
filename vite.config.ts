@@ -1,10 +1,9 @@
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import netlify from "@netlify/vite-plugin";
 
 export default defineConfig({
-  plugins: [react(), netlify()],
-  base: '/React-grapesjs-mjml/',        // must match your repo name
+  plugins: [react()],
+  base: '/React-grapesjs-mjml/', // must match your repo name / site subpath
   build: { outDir: 'dist', target: 'esnext' },
 });

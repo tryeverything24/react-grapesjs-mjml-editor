@@ -2,6 +2,12 @@
   command = "npm run build"
   publish = "dist"
 
+# SPA: serve index.html for client-side routes (when using base path)
+[[redirects]]
+  from = "/React-grapesjs-mjml/*"
+  to = "/React-grapesjs-mjml/index.html"
+  status = 200
+
 [dev]
   command = "npm run dev"
   port = 5173

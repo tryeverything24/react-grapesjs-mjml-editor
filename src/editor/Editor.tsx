@@ -9,7 +9,7 @@ import LeftSidebar from './components/LeftSidebar';
 import RightSidebar from './components/RightSidebar';
 import { sanitizeMjmlMarkup } from './utils/mjml';
 import { deepSanitize, sanitizeComponentAttributes, sanitizeComponentStyles } from './sanitizeAttributes';
-import registerPrebuiltBlocks from './plugins/registerPrebuiltBlocks';
+// import registerPrebuiltBlocks from './plugins/registerPrebuiltBlocks'; // used when uncommenting block registration below
 
 // ✅ ADD THIS IMPORT my_IMPORT one line
 import { fixMjWrapper } from './patches/fixMjWrapper';
@@ -712,9 +712,9 @@ const initialTemplate = [
     console.log('Available blocks:', editor.BlockManager.getAll().length);
     console.log('Block IDs:', editor.BlockManager.getAll().map((b: { getId: () => string }) => b.getId()));
 
-    // Add mj-group block to the Block Manager
+    // Add mj-group block to the Block Manager (uncomment to enable)
     // mj-group wraps columns to keep them side-by-side on mobile
-    const mjGroupBlockMarkup = [
+    const _mjGroupBlockMarkup = [
       '<mj-section>',
       '  <mj-group>',
       '    <mj-column width="50%">',
@@ -724,8 +724,9 @@ const initialTemplate = [
       '      <mj-text>Column 2</mj-text>',
       '    </mj-column>',
       '  </mj-group>',
-      '</mj-section>',
+    '</mj-section>',
     ].join('\n');
+    void _mjGroupBlockMarkup; // reserved for BlockManager.add('mj-group', { content: sanitizeMjmlMarkup(_mjGroupBlockMarkup), ... })
 
     // editor.BlockManager.add('mj-group', {
     //   label: 'Group',
