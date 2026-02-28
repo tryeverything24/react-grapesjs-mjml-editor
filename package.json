@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20 <21"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
@@ -11,6 +14,7 @@
   },
   "dependencies": {
     "@grapesjs/react": "^2.0.0",
+    "@netlify/vite-plugin": "^2.10.3",
     "grapesjs": "^0.22.13",
     "grapesjs-mjml": "^1.0.7",
     "mjml-browser": "^4.16.1",
@@ -23,6 +27,7 @@
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
+    "baseline-browser-mapping": "^2.10.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
